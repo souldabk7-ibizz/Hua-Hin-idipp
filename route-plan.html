@@ -26,7 +26,7 @@
     --green-soft:rgba(24,140,85,.14);
     --teal:#1596A0;
     --teal-soft:rgba(21,150,160,.14);
-    --blob-gold:#FFD8A0;--blob-teal:#9AD4F5;--blob-green:#A9EAC9;--blob-opacity:.5;
+    --blob-gold:#FFD8A0;--blob-teal:#9AD4F5;--blob-green:#A9EAC9;--blob-opacity:.5;--blob-blur:85px;
     --gold-ink:#7A4E0A;--green-ink:#0F6B41;--teal-ink:#0A4E54;
     --glow:0px;
     --radius:22px;
@@ -52,7 +52,7 @@
     --gold:#FF3CAC;--gold-soft:rgba(255,60,172,.18);
     --green:#39FF88;--green-soft:rgba(57,255,136,.16);
     --teal:#29F1FF;--teal-soft:rgba(41,241,255,.16);
-    --blob-gold:#FF3CAC;--blob-teal:#29F1FF;--blob-green:#39FF88;--blob-opacity:.4;
+    --blob-gold:#FF3CAC;--blob-teal:#29F1FF;--blob-green:#39FF88;--blob-opacity:.65;--blob-blur:55px;
     --gold-ink:#FF9EDB;--green-ink:#9CFFC6;--teal-ink:#9FF6FF;
     --glow:14px;
   }
@@ -71,7 +71,7 @@
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0;
-    background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 45%,var(--bg-3) 100%) fixed;
+    background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 45%,var(--bg-3) 100%);
     color:var(--text);
     font-family:'IBM Plex Sans Thai',sans-serif;
     -webkit-tap-highlight-color:transparent;
@@ -79,12 +79,16 @@
     overflow-x:hidden;
     position:relative;
   }
-  .blob{position:fixed;border-radius:50%;filter:blur(85px);z-index:-1;opacity:var(--blob-opacity);animation:drift 16s ease-in-out infinite alternate}
+  .blob{position:fixed;border-radius:50%;filter:blur(var(--blob-blur));z-index:-1;opacity:var(--blob-opacity);animation:drift 16s ease-in-out infinite alternate}
   .blob-gold{width:280px;height:280px;background:var(--blob-gold);top:-60px;left:-60px}
   .blob-teal{width:340px;height:340px;background:var(--blob-teal);top:40vh;right:-100px;animation-delay:-5s}
   .blob-green{width:260px;height:260px;background:var(--blob-green);bottom:-40px;left:10vw;animation-delay:-10s}
   @keyframes drift{from{transform:translate(0,0)}to{transform:translate(24px,-18px)}}
   @media (prefers-reduced-motion:reduce){.blob{animation:none}}
+  body[data-theme="cyberpunk"]::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:repeating-linear-gradient(180deg,rgba(41,241,255,.05) 0 1px,transparent 1px 3px);
+  }
   .glass{
     background:var(--surface);
     -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
