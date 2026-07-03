@@ -2,59 +2,227 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>แผนเดินทาง Nakhon Pathom → Hua Hin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0F141B">
+<title>Nakhon Pathom → Hua Hin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  body{font-family:"Segoe UI",Tahoma,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;background:#f7f7f5;color:#222}
-  h1{font-size:1.3rem}
-  .controls{display:flex;flex-wrap:wrap;gap:16px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin-bottom:20px}
-  .controls label{display:flex;flex-direction:column;font-size:.85rem;gap:4px}
-  .controls input{padding:6px;border:1px solid #ccc;border-radius:6px;font-size:.95rem}
-  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
-  th,td{padding:10px 8px;border-bottom:1px solid #eee;text-align:left;font-size:.9rem;vertical-align:top}
-  th{background:#2b6cb0;color:#fff;font-weight:600}
-  tr:last-child td{border-bottom:none}
-  .stop-input{width:60px;padding:4px;border:1px solid #ccc;border-radius:5px}
-  a.maplink{color:#2b6cb0;text-decoration:none;font-size:.8rem}
-  a.maplink:hover{text-decoration:underline}
-  .note{font-size:.8rem;color:#666;margin-top:10px}
-  .badge{display:inline-block;background:#eef;color:#2b6cb0;border-radius:4px;padding:1px 6px;font-size:.75rem;margin-left:4px}
-  .mapwrap{margin-top:20px;border:1px solid #ddd;border-radius:8px;overflow:hidden;background:#fff}
-  .mapwrap h2{font-size:1rem;margin:0;padding:10px 12px;background:#2b6cb0;color:#fff}
-  .maskbtn{display:block;margin:16px;padding:12px 16px;background:#2b6cb0;color:#fff;text-align:center;text-decoration:none;border-radius:6px;font-weight:600}
-  .maskbtn:hover{background:#1f5390}
-  .mapwrap .warn{font-size:.75rem;color:#a15c00;margin:0 16px 16px}
+  :root{
+    --bg:#0F141B;
+    --surface:#1A212B;
+    --surface-2:#232B37;
+    --hairline:#2A3340;
+    --text:#F3EFE4;
+    --text-dim:#8D97A3;
+    --gold:#E8B84B;
+    --gold-soft:rgba(232,184,75,.14);
+    --green:#2E9D68;
+    --green-soft:rgba(46,157,104,.14);
+    --teal:#4DBBC0;
+    --teal-soft:rgba(77,187,192,.14);
+    --radius:14px;
+    --radius-sm:8px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans Thai',sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    padding-bottom:calc(92px + env(safe-area-inset-bottom));
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 16px}
+  .mono{font-family:'IBM Plex Mono',monospace}
+
+  header.top{
+    padding:calc(20px + env(safe-area-inset-top)) 16px 18px;
+    max-width:480px;margin:0 auto;
+  }
+  .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.06em;
+    color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  h1{font-size:1.5rem;line-height:1.25;margin:0 0 4px;font-weight:700;letter-spacing:-.01em}
+  h1 .arrow{color:var(--text-dim);font-weight:400;padding:0 2px}
+  .totalbadge{
+    display:inline-flex;gap:6px;align-items:center;margin-top:10px;
+    font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--text-dim);
+    background:var(--surface);border:1px solid var(--hairline);border-radius:999px;padding:5px 12px;
+  }
+  .totalbadge b{color:var(--text);font-weight:600}
+
+  .controls{
+    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
+    padding:14px;margin:0 0 20px;display:flex;flex-direction:column;gap:14px;
+  }
+  .ctl-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .ctl-label{font-size:.82rem;color:var(--text-dim)}
+  .time-pill{
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.05rem;
+    background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-sm);
+    padding:8px 12px;color:var(--text);min-height:44px;min-width:100px;text-align:center;
+  }
+  .time-pill:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .segmented{display:flex;background:var(--surface-2);border:1px solid var(--hairline);border-radius:999px;padding:3px;gap:2px}
+  .segmented input{position:absolute;opacity:0;pointer-events:none}
+  .segmented label{
+    flex:1;text-align:center;padding:8px 0;min-height:38px;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--text-dim);border-radius:999px;
+    cursor:pointer;transition:background .15s,color .15s;
+  }
+  .segmented input:checked + label{background:var(--gold);color:#20180a;font-weight:600}
+  .segmented input:focus-visible + label{outline:2px solid var(--gold);outline-offset:2px}
+  .buffer-hint{font-size:.7rem;color:var(--text-dim)}
+
+  .timeline{list-style:none;margin:0 0 18px;padding:0;position:relative}
+  .stop{
+    position:relative;padding-left:30px;padding-bottom:4px;
+    opacity:0;transform:translateY(8px);
+    animation:rise .45s ease forwards;
+  }
+  .stop:nth-child(1){animation-delay:.02s}
+  .stop:nth-child(2){animation-delay:.08s}
+  .stop:nth-child(3){animation-delay:.14s}
+  .stop:nth-child(4){animation-delay:.2s}
+  .stop:nth-child(5){animation-delay:.26s}
+  .stop:nth-child(6){animation-delay:.32s}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+  @media (prefers-reduced-motion:reduce){
+    .stop{animation:none;opacity:1;transform:none}
+  }
+  .stop::before{ /* node dot */
+    content:"";position:absolute;left:3px;top:6px;width:12px;height:12px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--gold);
+  }
+  .stop.first::before,.stop.last::before{border-color:var(--teal)}
+  .stop::after{ /* connecting line */
+    content:"";position:absolute;left:8px;top:20px;bottom:-4px;width:1px;
+    background:repeating-linear-gradient(to bottom,var(--hairline) 0 4px,transparent 4px 8px);
+  }
+  .stop.last::after{display:none}
+
+  .stopcard{
+    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
+    padding:12px 14px;margin-bottom:8px;
+  }
+  .stopname-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .stopname{
+    font-weight:600;font-size:.95rem;color:var(--text);text-decoration:none;
+    display:flex;align-items:center;gap:6px;line-height:1.3;
+  }
+  .stopname svg{flex:none;color:var(--text-dim)}
+  .stopname:hover .pintxt, .stopname:focus-visible .pintxt{text-decoration:underline}
+  .times{display:flex;gap:10px;margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:.85rem}
+  .times .arrive{color:var(--text)}
+  .times .depart{color:var(--text-dim)}
+  .times .sep{color:var(--hairline)}
+
+  .stepper{display:flex;align-items:center;gap:8px;margin-top:10px}
+  .stepper button{
+    width:32px;height:32px;border-radius:8px;border:1px solid var(--hairline);
+    background:var(--surface-2);color:var(--text);font-size:1rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stepper button:active{background:var(--gold-soft);border-color:var(--gold)}
+  .stepper .val{font-family:'IBM Plex Mono',monospace;font-size:.85rem;min-width:64px;text-align:center;color:var(--text-dim)}
+  .stepper .val b{color:var(--text);font-weight:600}
+
+  .connector{
+    position:relative;padding-left:30px;margin:2px 0 10px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .connector .kmbadge{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;color:#0d1a12;
+    background:var(--green);border-radius:5px;padding:2px 7px;
+  }
+  .connector .drivetxt{font-size:.75rem;color:var(--text-dim)}
+
+  .note{
+    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
+    padding:12px 14px;font-size:.76rem;color:var(--text-dim);line-height:1.6;margin-bottom:24px;
+  }
+  .note b{color:var(--text)}
+
+  .bottombar{
+    position:fixed;left:0;right:0;bottom:0;z-index:10;
+    background:linear-gradient(to top,var(--bg) 60%,transparent);
+    padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+  }
+  .bottombar-inner{
+    max-width:448px;margin:0 auto;background:var(--surface);border:1px solid var(--hairline);
+    border-radius:var(--radius);padding:10px 12px;display:flex;align-items:center;gap:10px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+  }
+  .arrival{flex:1;min-width:0}
+  .arrival .lbl{font-size:.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
+  .arrival .val{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:600;color:var(--teal)}
+  .cta{
+    display:flex;align-items:center;gap:6px;background:var(--teal);color:#06282a;
+    font-weight:600;font-size:.85rem;text-decoration:none;padding:12px 14px;border-radius:10px;
+    white-space:nowrap;min-height:44px;
+  }
+  .cta:active{background:#3ea3a8}
+  .cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
 
-<h1>แผนเดินทาง Nakhon Pathom → Hua Hin (via ถ.บรมราชชนนี/AH123)</h1>
+<header class="top">
+  <div class="eyebrow"><span class="dot"></span> Road trip · via ถ.บรมราชชนนี/AH123</div>
+  <h1>Nakhon Pathom <span class="arrow">→</span> Hua Hin</h1>
+  <span class="totalbadge" id="totalBadge"></span>
+</header>
 
-<div class="controls">
-  <label>เวลาออกจากบ้าน
-    <input type="time" id="startTime" value="10:00">
-  </label>
-  <label>Traffic buffer (%) <span class="badge">กลางวันศุกร์ 10:00-15:00 ~5-10%</span>
-    <input type="number" id="trafficBuffer" value="10" min="0" max="100" step="5">
-  </label>
+<div class="wrap">
+
+  <div class="controls">
+    <div class="ctl-row">
+      <span class="ctl-label">ออกจากบ้าน</span>
+      <input type="time" id="startTime" class="time-pill mono" value="10:00">
+    </div>
+    <div class="ctl-row" style="flex-direction:column;align-items:stretch;gap:6px">
+      <div class="ctl-row">
+        <span class="ctl-label">Traffic buffer</span>
+        <span class="buffer-hint">ศุกร์กลางวัน ~10%</span>
+      </div>
+      <div class="segmented" id="bufferSeg">
+        <input type="radio" name="buf" id="buf0" value="0"><label for="buf0">0%</label>
+        <input type="radio" name="buf" id="buf10" value="10" checked><label for="buf10">10%</label>
+        <input type="radio" name="buf" id="buf20" value="20"><label for="buf20">20%</label>
+        <input type="radio" name="buf" id="buf30" value="30"><label for="buf30">30%</label>
+      </div>
+    </div>
+  </div>
+
+  <ul class="timeline" id="timeline"></ul>
+
+  <p class="note">
+    <b>รถติดวันศุกร์:</b> ช่วงกลางวัน (10:00-15:00) ปกติไม่ติดมาก จุดติดจริงคือขาออก กทม. ช่วงเย็น 15:00+ (มีมาตรการ reverse-lane) — เส้นทางนี้ผ่านช่วงเสี่ยงตอนเช้า-บ่ายต้น เลี่ยงได้ ถ้าแวะนานขึ้นจนเลย 15:00 ให้เพิ่ม buffer<br><br>
+    <b>ระยะ/เวลาขับ:</b> ประมาณจากระยะทางรวมของ Google Maps (ไม่แยกให้ทีละช่วง) · แตะชื่อจุดเพื่อเปิด Google Maps ค้นหาสถานที่นั้น
+  </p>
+
 </div>
 
-<table>
-  <thead>
-    <tr><th>จุด</th><th>ขับ (นาที, base)</th><th>ถึง</th><th>แวะ (นาที)</th><th>ออก</th></tr>
-  </thead>
-  <tbody id="rows"></tbody>
-</table>
-
-<p class="note">
-  * เวลาขับต่อช่วงเป็นค่าประมาณจากระยะทางรวม 194km / 3h18m (Google Maps ไม่แยกให้) —
-  ช่วงกลางวันวันศุกร์รถปกติไม่ติดมาก — จุดติดจริงคือขาออก กทม. ช่วงเย็น 15:00+ (มีมาตรการ reverse-lane) เส้นทางนี้ผ่านจุดเสี่ยงช่วงเช้า-บ่ายต้น เลี่ยงได้ แต่ถ้าแวะเพิ่ม/นานขึ้นจนถึง Cha-am เกิน 15:00 ให้เผื่อ buffer เพิ่ม<br>
-  * กดชื่อจุดเพื่อเปิด Google Maps ค้นหาสถานที่นั้น
-</p>
-
-<div class="mapwrap">
-  <h2>เส้นทาง GPS (จุดต่อจุด)</h2>
-  <a id="routeMapLink" class="maskbtn" target="_blank" href="#">เปิดเส้นทางเต็ม (ทุกจุด) ใน Google Maps</a>
-  <p class="warn">* Google บล็อกการฝัง iframe แผนที่เส้นทางแบบไม่มี API key — กดปุ่มเปิดในแท็บใหม่แทน จะเห็นเส้นทางเต็มพร้อมทุกจุดแวะ</p>
+<div class="bottombar">
+  <div class="bottombar-inner">
+    <div class="arrival">
+      <div class="lbl">ถึงที่พัก</div>
+      <div class="val mono" id="finalArrival">–:––</div>
+    </div>
+    <a class="cta" id="routeMapLink" target="_blank" rel="noopener" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>
+      เปิดใน Maps
+    </a>
+  </div>
 </div>
 
 <script>
@@ -67,61 +235,104 @@ const legs = [
   { name: "Centara Life Cha Am Beach Resort Hua Hin", km: 22, driveMin: 24, defaultStop: 0, query: "Centara Life Cha Am Beach Resort Hua Hin" }
 ];
 
-const rowsEl = document.getElementById("rows");
+const stopMinutes = legs.map(l => l.defaultStop);
+
+const timelineEl = document.getElementById("timeline");
 const startTimeEl = document.getElementById("startTime");
-const trafficEl = document.getElementById("trafficBuffer");
+const finalArrivalEl = document.getElementById("finalArrival");
 
-function mapUrl(q){ return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q); }
-function fmt(mins){
-  const h = Math.floor(mins/60)%24, m = Math.round(mins%60);
-  return String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0");
-}
+const mapUrl = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+const fmt = mins => {
+  const h = Math.floor(mins / 60) % 24, m = Math.round(mins % 60);
+  return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+};
+const pinSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
 
-function buildMap(){
+function buildMap() {
   const saddr = legs[0].query;
-  const daddr = legs.slice(1).map(l => encodeURIComponent(l.query)).join("+to:");
+  const daddr = legs[legs.length - 1].query;
+  const waypoints = legs.slice(1, -1).map(l => encodeURIComponent(l.query)).join("|");
   document.getElementById("routeMapLink").href =
-    `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(saddr)}&destination=${encodeURIComponent(legs[legs.length-1].query)}&waypoints=${legs.slice(1,-1).map(l=>encodeURIComponent(l.query)).join("|")}`;
+    `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(saddr)}&destination=${encodeURIComponent(daddr)}&waypoints=${waypoints}`;
 }
 
-function build(){
+function buildTotalBadge() {
+  const km = legs.reduce((a, l) => a + l.km, 0);
+  const min = legs.reduce((a, l) => a + l.driveMin, 0);
+  document.getElementById("totalBadge").innerHTML =
+    `<b>${Math.floor(min / 60)}h ${min % 60}m</b> ขับ · <b>${km}km</b> · ${legs.length} จุดแวะ`;
+}
+
+function build() {
   buildMap();
-  rowsEl.innerHTML = "";
+  buildTotalBadge();
+  timelineEl.innerHTML = "";
+
   legs.forEach((leg, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><a class="maplink" target="_blank" href="${mapUrl(leg.query)}">${leg.name}</a></td>
-      <td>${leg.driveMin || "-"}</td>
-      <td class="arriveCell">-</td>
-      <td>${i === 0 || i === legs.length - 1 ? "-" : `<input type="number" class="stop-input" data-idx="${i}" value="${leg.defaultStop}" min="0" step="5">`}</td>
-      <td class="departCell">-</td>
+    if (i > 0) {
+      const conn = document.createElement("li");
+      conn.className = "connector";
+      conn.innerHTML = `<span class="kmbadge">${leg.km}km</span><span class="drivetxt">ขับ ~${leg.driveMin} นาที</span>`;
+      timelineEl.appendChild(conn);
+    }
+
+    const li = document.createElement("li");
+    li.className = "stop" + (i === 0 ? " first" : "") + (i === legs.length - 1 ? " last" : "");
+    const canStop = i !== 0 && i !== legs.length - 1;
+    li.innerHTML = `
+      <div class="stopcard">
+        <div class="stopname-row">
+          <a class="stopname" target="_blank" rel="noopener" href="${mapUrl(leg.query)}">${pinSvg}<span class="pintxt">${leg.name}</span></a>
+        </div>
+        <div class="times">
+          <span class="arrive">${i === 0 ? "ออก" : "ถึง"} <b class="arriveVal">-</b></span>
+          ${canStop ? '<span class="sep">·</span><span class="depart">ออก <b class="departVal">-</b></span>' : ""}
+        </div>
+        ${canStop ? `
+        <div class="stepper" data-idx="${i}">
+          <button type="button" data-d="-5" aria-label="ลดเวลาแวะ">−</button>
+          <span class="val">แวะ <b class="minVal">${leg.defaultStop}</b> นาที</span>
+          <button type="button" data-d="5" aria-label="เพิ่มเวลาแวะ">+</button>
+        </div>` : ""}
+      </div>
     `;
-    rowsEl.appendChild(tr);
+    timelineEl.appendChild(li);
   });
-  rowsEl.querySelectorAll(".stop-input").forEach(inp => inp.addEventListener("input", recalc));
+
+  timelineEl.querySelectorAll(".stepper").forEach(stepper => {
+    const idx = Number(stepper.dataset.idx);
+    stepper.querySelectorAll("button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const d = Number(btn.dataset.d);
+        stopMinutes[idx] = Math.max(0, stopMinutes[idx] + d);
+        stepper.querySelector(".minVal").textContent = stopMinutes[idx];
+        recalc();
+      });
+    });
+  });
+
   recalc();
 }
 
-function recalc(){
+function recalc() {
   const [h, m] = startTimeEl.value.split(":").map(Number);
   let t = h * 60 + m;
-  const buffer = 1 + (Number(trafficEl.value) || 0) / 100;
-  const rows = rowsEl.querySelectorAll("tr");
+  const buffer = 1 + Number(document.querySelector('input[name="buf"]:checked').value) / 100;
 
+  const stops = timelineEl.querySelectorAll(".stop");
   legs.forEach((leg, i) => {
-    t += leg.driveMin * (leg.driveMin > 0 ? buffer : 1);
-    const arriveCell = rows[i].querySelector(".arriveCell");
-    arriveCell.textContent = fmt(t);
-
-    const stopInput = rows[i].querySelector(".stop-input");
-    const stopMin = stopInput ? Number(stopInput.value) || 0 : 0;
-    t += stopMin;
-    rows[i].querySelector(".departCell").textContent = i === legs.length - 1 ? "ถึงที่พัก" : fmt(t);
+    t += leg.driveMin * buffer;
+    const card = stops[i];
+    card.querySelector(".arriveVal").textContent = fmt(t);
+    t += stopMinutes[i];
+    const departEl = card.querySelector(".departVal");
+    if (departEl) departEl.textContent = fmt(t);
+    if (i === legs.length - 1) finalArrivalEl.textContent = fmt(t);
   });
 }
 
 startTimeEl.addEventListener("input", recalc);
-trafficEl.addEventListener("input", recalc);
+document.getElementById("bufferSeg").addEventListener("change", recalc);
 build();
 </script>
 </body>
