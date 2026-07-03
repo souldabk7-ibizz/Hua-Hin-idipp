@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>แผนเดินทาง Nakhon Pathom → Hua Hin</title>
+<style>
+  body{font-family:"Segoe UI",Tahoma,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;background:#f7f7f5;color:#222}
+  h1{font-size:1.3rem}
+  .controls{display:flex;flex-wrap:wrap;gap:16px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:16px;margin-bottom:20px}
+  .controls label{display:flex;flex-direction:column;font-size:.85rem;gap:4px}
+  .controls input{padding:6px;border:1px solid #ccc;border-radius:6px;font-size:.95rem}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden}
+  th,td{padding:10px 8px;border-bottom:1px solid #eee;text-align:left;font-size:.9rem;vertical-align:top}
+  th{background:#2b6cb0;color:#fff;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  .stop-input{width:60px;padding:4px;border:1px solid #ccc;border-radius:5px}
+  a.maplink{color:#2b6cb0;text-decoration:none;font-size:.8rem}
+  a.maplink:hover{text-decoration:underline}
+  .note{font-size:.8rem;color:#666;margin-top:10px}
+  .badge{display:inline-block;background:#eef;color:#2b6cb0;border-radius:4px;padding:1px 6px;font-size:.75rem;margin-left:4px}
+  .mapwrap{margin-top:20px;border:1px solid #ddd;border-radius:8px;overflow:hidden;background:#fff}
+  .mapwrap h2{font-size:1rem;margin:0;padding:10px 12px;background:#2b6cb0;color:#fff}
+  .maskbtn{display:block;margin:16px;padding:12px 16px;background:#2b6cb0;color:#fff;text-align:center;text-decoration:none;border-radius:6px;font-weight:600}
+  .maskbtn:hover{background:#1f5390}
+  .mapwrap .warn{font-size:.75rem;color:#a15c00;margin:0 16px 16px}
+</style>
+</head>
+<body>
+
+<h1>แผนเดินทาง Nakhon Pathom → Hua Hin (via ถ.บรมราชชนนี/AH123)</h1>
+
+<div class="controls">
+  <label>เวลาออกจากบ้าน
+    <input type="time" id="startTime" value="10:00">
+  </label>
+  <label>Traffic buffer (%) <span class="badge">กลางวันศุกร์ 10:00-15:00 ~5-10%</span>
+    <input type="number" id="trafficBuffer" value="10" min="0" max="100" step="5">
+  </label>
+</div>
+
+<table>
+  <thead>
+    <tr><th>จุด</th><th>ขับ (นาที, base)</th><th>ถึง</th><th>แวะ (นาที)</th><th>ออก</th></tr>
+  </thead>
+  <tbody id="rows"></tbody>
+</table>
+
+<p class="note">
+  * เวลาขับต่อช่วงเป็นค่าประมาณจากระยะทางรวม 194km / 3h18m (Google Maps ไม่แยกให้) —
+  ช่วงกลางวันวันศุกร์รถปกติไม่ติดมาก — จุดติดจริงคือขาออก กทม. ช่วงเย็น 15:00+ (มีมาตรการ reverse-lane) เส้นทางนี้ผ่านจุดเสี่ยงช่วงเช้า-บ่ายต้น เลี่ยงได้ แต่ถ้าแวะเพิ่ม/นานขึ้นจนถึง Cha-am เกิน 15:00 ให้เผื่อ buffer เพิ่ม<br>
+  * กดชื่อจุดเพื่อเปิด Google Maps ค้นหาสถานที่นั้น
+</p>
+
+<div class="mapwrap">
+  <h2>เส้นทาง GPS (จุดต่อจุด)</h2>
+  <a id="routeMapLink" class="maskbtn" target="_blank" href="#">เปิดเส้นทางเต็ม (ทุกจุด) ใน Google Maps</a>
+  <p class="warn">* Google บล็อกการฝัง iframe แผนที่เส้นทางแบบไม่มี API key — กดปุ่มเปิดในแท็บใหม่แทน จะเห็นเส้นทางเต็มพร้อมทุกจุดแวะ</p>
+</div>
+
+<script>
+const legs = [
+  { name: "Home (Nakhon Pathom)", km: 0, driveMin: 0, defaultStop: 0, query: "Nakhon Pathom, Thailand" },
+  { name: "Thonburi Market Place", km: 15, driveMin: 20, defaultStop: 30, query: "Thonburi Market Place, Borommaratchachonnani Road, Nakhon Pathom" },
+  { name: "Wat Phet Samut Worawihan (Mae Klong)", km: 52, driveMin: 53, defaultStop: 30, query: "Wat Phet Samut Worawihan, Samut Songkhram" },
+  { name: "Wat Khao Takrao Luang Pho Thong 5 Phi", km: 75, driveMin: 71, defaultStop: 30, query: "Wat Khao Takrao Luang Pho Thong, Phetchaburi" },
+  { name: "Wat Tham Chaeng (Khao Yai, Cha-am)", km: 30, driveMin: 30, defaultStop: 30, query: "Wat Tham Chaeng, Cha-am, Phetchaburi" },
+  { name: "Centara Life Cha Am Beach Resort Hua Hin", km: 22, driveMin: 24, defaultStop: 0, query: "Centara Life Cha Am Beach Resort Hua Hin" }
+];
+
+const rowsEl = document.getElementById("rows");
+const startTimeEl = document.getElementById("startTime");
+const trafficEl = document.getElementById("trafficBuffer");
+
+function mapUrl(q){ return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q); }
+function fmt(mins){
+  const h = Math.floor(mins/60)%24, m = Math.round(mins%60);
+  return String(h).padStart(2,"0") + ":" + String(m).padStart(2,"0");
+}
+
+function buildMap(){
+  const saddr = legs[0].query;
+  const daddr = legs.slice(1).map(l => encodeURIComponent(l.query)).join("+to:");
+  document.getElementById("routeMapLink").href =
+    `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(saddr)}&destination=${encodeURIComponent(legs[legs.length-1].query)}&waypoints=${legs.slice(1,-1).map(l=>encodeURIComponent(l.query)).join("|")}`;
+}
+
+function build(){
+  buildMap();
+  rowsEl.innerHTML = "";
+  legs.forEach((leg, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><a class="maplink" target="_blank" href="${mapUrl(leg.query)}">${leg.name}</a></td>
+      <td>${leg.driveMin || "-"}</td>
+      <td class="arriveCell">-</td>
+      <td>${i === 0 || i === legs.length - 1 ? "-" : `<input type="number" class="stop-input" data-idx="${i}" value="${leg.defaultStop}" min="0" step="5">`}</td>
+      <td class="departCell">-</td>
+    `;
+    rowsEl.appendChild(tr);
+  });
+  rowsEl.querySelectorAll(".stop-input").forEach(inp => inp.addEventListener("input", recalc));
+  recalc();
+}
+
+function recalc(){
+  const [h, m] = startTimeEl.value.split(":").map(Number);
+  let t = h * 60 + m;
+  const buffer = 1 + (Number(trafficEl.value) || 0) / 100;
+  const rows = rowsEl.querySelectorAll("tr");
+
+  legs.forEach((leg, i) => {
+    t += leg.driveMin * (leg.driveMin > 0 ? buffer : 1);
+    const arriveCell = rows[i].querySelector(".arriveCell");
+    arriveCell.textContent = fmt(t);
+
+    const stopInput = rows[i].querySelector(".stop-input");
+    const stopMin = stopInput ? Number(stopInput.value) || 0 : 0;
+    t += stopMin;
+    rows[i].querySelector(".departCell").textContent = i === legs.length - 1 ? "ถึงที่พัก" : fmt(t);
+  });
+}
+
+startTimeEl.addEventListener("input", recalc);
+trafficEl.addEventListener("input", recalc);
+build();
+</script>
+</body>
+</html>
