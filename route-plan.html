@@ -5,35 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#EAF4FC">
+<meta name="theme-color" content="#F6EFDB">
 <title>Nakhon Pathom → Hua Hin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#E9F3FC;
-    --bg-1:#F2F8FE;--bg-2:#DCEBFA;--bg-3:#E8F2FC;
-    --surface:rgba(255,255,255,.55);
-    --surface-2:rgba(255,255,255,.72);
-    --hairline:rgba(23,55,90,.12);
-    --glass-hi:rgba(255,255,255,.85);
-    --text:#132238;
-    --text-dim:#5B6C82;
-    --gold:#B9791E;
-    --gold-soft:rgba(201,146,46,.16);
-    --green:#188C55;
-    --green-soft:rgba(24,140,85,.14);
-    --teal:#1596A0;
-    --teal-soft:rgba(21,150,160,.14);
-    --blob-gold:#FFD8A0;--blob-teal:#9AD4F5;--blob-green:#A9EAC9;--blob-opacity:.5;--blob-blur:85px;
-    --gold-ink:#7A4E0A;--green-ink:#0F6B41;--teal-ink:#0A4E54;
-    --glow:0px;
-    --radius:22px;
-    --radius-sm:14px;
-    --blur:blur(22px) saturate(160%);
-  }
-  body[data-theme="ghibli"]{
+    --bg:#F6EFDB;
     --bg-1:#FBF4DF;--bg-2:#E4EFD3;--bg-3:#F6EFDB;
     --surface:rgba(255,253,244,.6);--surface-2:rgba(255,253,244,.78);
     --hairline:rgba(75,64,34,.14);--glass-hi:rgba(255,255,255,.8);
@@ -41,31 +20,12 @@
     --gold:#B9822F;--gold-soft:rgba(185,130,47,.16);
     --green:#5B8C4A;--green-soft:rgba(91,140,74,.16);
     --teal:#4E8C82;--teal-soft:rgba(78,140,130,.16);
-    --blob-gold:#F0D9A0;--blob-teal:#BFE0C9;--blob-green:#CDE3A6;--blob-opacity:.55;
+    --blob-gold:#F0D9A0;--blob-teal:#BFE0C9;--blob-green:#CDE3A6;--blob-opacity:.55;--blob-blur:85px;
     --gold-ink:#6B4A18;--green-ink:#33502A;--teal-ink:#2C4F49;
-  }
-  body[data-theme="cyberpunk"]{
-    --bg-1:#0A0714;--bg-2:#130A22;--bg-3:#08050F;
-    --surface:rgba(30,15,55,.45);--surface-2:rgba(30,15,55,.6);
-    --hairline:rgba(180,140,255,.25);--glass-hi:rgba(255,255,255,.2);
-    --text:#EAFBFF;--text-dim:#9AA0D8;
-    --gold:#FF3CAC;--gold-soft:rgba(255,60,172,.18);
-    --green:#39FF88;--green-soft:rgba(57,255,136,.16);
-    --teal:#29F1FF;--teal-soft:rgba(41,241,255,.16);
-    --blob-gold:#FF3CAC;--blob-teal:#29F1FF;--blob-green:#39FF88;--blob-opacity:.65;--blob-blur:55px;
-    --gold-ink:#FF9EDB;--green-ink:#9CFFC6;--teal-ink:#9FF6FF;
-    --glow:14px;
-  }
-  body[data-theme="muji"]{
-    --bg-1:#F2EEE6;--bg-2:#EBE5D8;--bg-3:#F2EEE6;
-    --surface:rgba(255,255,255,.5);--surface-2:rgba(255,255,255,.65);
-    --hairline:rgba(60,52,40,.12);--glass-hi:rgba(255,255,255,.7);
-    --text:#3A3733;--text-dim:#8C8579;
-    --gold:#A6793C;--gold-soft:rgba(166,121,60,.14);
-    --green:#6B7A5E;--green-soft:rgba(107,122,94,.14);
-    --teal:#5C6B6B;--teal-soft:rgba(92,107,107,.14);
-    --blob-gold:#DDD3BE;--blob-teal:#D7DAD2;--blob-green:#D9DECB;--blob-opacity:.25;
-    --gold-ink:#7A5A2E;--green-ink:#4C5741;--teal-ink:#3F4A4A;
+    --glow:0px;
+    --radius:22px;
+    --radius-sm:14px;
+    --blur:blur(22px) saturate(160%);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -85,10 +45,6 @@
   .blob-green{width:260px;height:260px;background:var(--blob-green);bottom:-40px;left:10vw;animation-delay:-10s}
   @keyframes drift{from{transform:translate(0,0)}to{transform:translate(24px,-18px)}}
   @media (prefers-reduced-motion:reduce){.blob{animation:none}}
-  body[data-theme="cyberpunk"]::before{
-    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-    background-image:repeating-linear-gradient(180deg,rgba(41,241,255,.05) 0 1px,transparent 1px 3px);
-  }
   .glass{
     background:var(--surface);
     -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
@@ -255,20 +211,6 @@
   }
   .cta:active{background:color-mix(in srgb,var(--teal) 38%,transparent)}
   .cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-
-  .themepicker{
-    display:flex;gap:6px;overflow-x:auto;margin-top:12px;padding-bottom:2px;
-    scrollbar-width:none;
-  }
-  .themepicker::-webkit-scrollbar{display:none}
-  .themepicker button{
-    flex:none;font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;
-    color:var(--text-dim);background:var(--surface);border:1px solid var(--hairline);
-    border-radius:999px;padding:6px 12px;min-height:32px;
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    box-shadow:inset 0 1px 0 var(--glass-hi);
-  }
-  .themepicker button.active{color:var(--text);background:var(--surface-2);border-color:var(--teal)}
 </style>
 </head>
 <body>
@@ -281,12 +223,6 @@
   <div class="eyebrow"><span class="dot"></span> Road trip · via ถ.บรมราชชนนี/AH123</div>
   <h1>Nakhon Pathom <span class="arrow">→</span> Hua Hin</h1>
   <span class="totalbadge" id="totalBadge"></span>
-  <div class="themepicker" id="themePicker">
-    <button type="button" data-theme="sky">ฟ้าอ่อน</button>
-    <button type="button" data-theme="ghibli">Ghibli</button>
-    <button type="button" data-theme="cyberpunk">Cyberpunk</button>
-    <button type="button" data-theme="muji">Muji</button>
-  </div>
 </header>
 
 <div class="wrap">
@@ -441,18 +377,6 @@ function recalc() {
 startTimeEl.addEventListener("input", recalc);
 document.getElementById("bufferSeg").addEventListener("change", recalc);
 build();
-
-const themePicker = document.getElementById("themePicker");
-function setTheme(theme) {
-  document.body.dataset.theme = theme;
-  localStorage.setItem("routeTheme", theme);
-  themePicker.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.theme === theme));
-}
-themePicker.addEventListener("click", e => {
-  const btn = e.target.closest("button");
-  if (btn) setTheme(btn.dataset.theme);
-});
-setTheme(localStorage.getItem("routeTheme") || "sky");
 </script>
 </body>
 </html>
