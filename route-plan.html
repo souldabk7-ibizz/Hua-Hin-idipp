@@ -6,10 +6,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F6EFDB">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
 <title>Nakhon Pathom → Hua Hin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root{
     --bg:#F6EFDB;
@@ -211,6 +215,23 @@
   }
   .cta:active{background:color-mix(in srgb,var(--teal) 38%,transparent)}
   .cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .mapcard{
+    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
+    padding:8px;margin-bottom:16px;
+    -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+    box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.4),0 6px 20px rgba(23,55,90,.10);
+  }
+  #leafletMap{height:260px;border-radius:16px;overflow:hidden}
+  .maploading{
+    height:260px;display:flex;align-items:center;justify-content:center;
+    color:var(--text-dim);font-size:.8rem;font-family:'IBM Plex Mono',monospace;
+  }
+  .leaflet-popup-content-wrapper{
+    background:var(--surface-2);color:var(--text);border-radius:10px;
+    font-family:'IBM Plex Sans Thai',sans-serif;
+  }
+  .leaflet-popup-tip{background:var(--surface-2)}
 </style>
 </head>
 <body>
@@ -248,6 +269,10 @@
 
   <ul class="timeline" id="timeline"></ul>
 
+  <div class="mapcard">
+    <div id="leafletMap"><div class="maploading" id="mapLoading">กำลังโหลดแผนที่…</div></div>
+  </div>
+
   <p class="note">
     <b>รถติดวันศุกร์:</b> ช่วงกลางวัน (10:00-15:00) ปกติไม่ติดมาก จุดติดจริงคือขาออก กทม. ช่วงเย็น 15:00+ (มีมาตรการ reverse-lane) — เส้นทางนี้ผ่านช่วงเสี่ยงตอนเช้า-บ่ายต้น เลี่ยงได้ ถ้าแวะนานขึ้นจนเลย 15:00 ให้เพิ่ม buffer<br><br>
     <b>ระยะ/เวลาขับ:</b> ประมาณจากระยะทางรวมของ Google Maps (ไม่แยกให้ทีละช่วง) · แตะชื่อจุดเพื่อเปิด Google Maps ค้นหาสถานที่นั้น
@@ -271,11 +296,11 @@
 <script>
 const legs = [
   { name: "Home (Nakhon Pathom)", km: 0, driveMin: 0, defaultStop: 0, query: "Nakhon Pathom, Thailand" },
-  { name: "Thonburi Market Place", km: 15, driveMin: 20, defaultStop: 30, query: "Thonburi Market Place, Borommaratchachonnani Road, Nakhon Pathom" },
-  { name: "Wat Phet Samut Worawihan (Mae Klong)", km: 52, driveMin: 53, defaultStop: 30, query: "Wat Phet Samut Worawihan, Samut Songkhram" },
-  { name: "Wat Khao Takrao Luang Pho Thong 5 Phi", km: 75, driveMin: 71, defaultStop: 30, query: "Wat Khao Takrao Luang Pho Thong, Phetchaburi" },
+  { name: "Thonburi Market Place", km: 15, driveMin: 20, defaultStop: 30, query: "Thonburi Market Place, Borommaratchachonnani Road, Nakhon Pathom", geo: "Thonburi Market Place, Bangkok" },
+  { name: "Wat Phet Samut Worawihan (Mae Klong)", km: 52, driveMin: 53, defaultStop: 30, query: "Wat Phet Samut Worawihan, Samut Songkhram", geo: "Wat Ban Laem, Samut Songkhram" },
+  { name: "Wat Khao Takrao Luang Pho Thong 5 Phi", km: 75, driveMin: 71, defaultStop: 30, query: "Wat Khao Takrao Luang Pho Thong, Phetchaburi", geo: "Ban Laem, Phetchaburi", geoApprox: true },
   { name: "Wat Tham Chaeng (Khao Yai, Cha-am)", km: 30, driveMin: 30, defaultStop: 30, query: "Wat Tham Chaeng, Cha-am, Phetchaburi" },
-  { name: "Centara Life Cha Am Beach Resort Hua Hin", km: 22, driveMin: 24, defaultStop: 0, query: "Centara Life Cha Am Beach Resort Hua Hin" }
+  { name: "Centara Life Cha Am Beach Resort Hua Hin", km: 22, driveMin: 24, defaultStop: 0, query: "Centara Life Cha Am Beach Resort Hua Hin", geo: "Cha-am Beach, Phetchaburi", geoApprox: true }
 ];
 
 const stopMinutes = legs.map(l => l.defaultStop);
@@ -377,6 +402,65 @@ function recalc() {
 startTimeEl.addEventListener("input", recalc);
 document.getElementById("bufferSeg").addEventListener("change", recalc);
 build();
+
+async function geocode(query) {
+  const cacheKey = "geo:" + query;
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) return JSON.parse(cached);
+  const url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(query);
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!data[0]) return null;
+  const point = { lat: Number(data[0].lat), lng: Number(data[0].lon) };
+  localStorage.setItem(cacheKey, JSON.stringify(point));
+  return point;
+}
+
+async function initMap() {
+  const points = [];
+  const missing = [];
+  for (const leg of legs) {
+    const p = await geocode(leg.geo || leg.query);
+    if (p) points.push({ ...p, name: leg.name, approx: !!leg.geoApprox });
+    else missing.push(leg.name);
+    await new Promise(r => setTimeout(r, 1100));
+  }
+  document.getElementById("mapLoading")?.remove();
+
+  if (missing.length) {
+    const note = document.createElement("p");
+    note.className = "note";
+    note.style.marginTop = "-8px";
+    note.innerHTML = `<b>หาพิกัดไม่เจอ:</b> ${missing.join(", ")} — จุดนี้ไม่ขึ้นบนแผนที่ย่อ กดปุ่ม "เปิดใน Maps" ด้านล่างเพื่อดูเส้นทางเต็มแทน`;
+    document.querySelector(".mapcard").after(note);
+  }
+  if (points.length < 2) return;
+
+  const map = L.map("leafletMap", { scrollWheelZoom: false }).setView([points[0].lat, points[0].lng], 8);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    maxZoom: 19
+  }).addTo(map);
+
+  points.forEach((p, i) => {
+    L.circleMarker([p.lat, p.lng], {
+      radius: 7,
+      color: i === 0 || i === points.length - 1 ? "#4E8C82" : "#B9822F",
+      weight: 2,
+      fillColor: "#FBF4DF",
+      fillOpacity: 1,
+      dashArray: p.approx ? "3 3" : null
+    }).addTo(map).bindPopup(`<b>${i + 1}. ${p.name}</b>${p.approx ? "<br><i>ตำแหน่งโดยประมาณ</i>" : ""}`);
+  });
+
+  L.polyline(points.map(p => [p.lat, p.lng]), { color: "#5B8C4A", weight: 3, opacity: .7, dashArray: "6 6" }).addTo(map);
+  map.fitBounds(points.map(p => [p.lat, p.lng]), { padding: [24, 24] });
+}
+initMap();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
 </script>
 </body>
 </html>

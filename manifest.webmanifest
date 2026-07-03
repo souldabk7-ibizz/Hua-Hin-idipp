@@ -1,0 +1,12 @@
+{
+  "name": "Nakhon Pathom to Hua Hin Trip",
+  "short_name": "Hua Hin Trip",
+  "start_url": "./route-plan.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F6EFDB",
+  "theme_color": "#F6EFDB",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
