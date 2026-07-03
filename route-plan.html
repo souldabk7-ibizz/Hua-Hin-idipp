@@ -13,6 +13,7 @@
 <style>
   :root{
     --bg:#E9F3FC;
+    --bg-1:#F2F8FE;--bg-2:#DCEBFA;--bg-3:#E8F2FC;
     --surface:rgba(255,255,255,.55);
     --surface-2:rgba(255,255,255,.72);
     --hairline:rgba(23,55,90,.12);
@@ -25,15 +26,52 @@
     --green-soft:rgba(24,140,85,.14);
     --teal:#1596A0;
     --teal-soft:rgba(21,150,160,.14);
+    --blob-gold:#FFD8A0;--blob-teal:#9AD4F5;--blob-green:#A9EAC9;--blob-opacity:.5;
+    --gold-ink:#7A4E0A;--green-ink:#0F6B41;--teal-ink:#0A4E54;
+    --glow:0px;
     --radius:22px;
     --radius-sm:14px;
     --blur:blur(22px) saturate(160%);
+  }
+  body[data-theme="ghibli"]{
+    --bg-1:#FBF4DF;--bg-2:#E4EFD3;--bg-3:#F6EFDB;
+    --surface:rgba(255,253,244,.6);--surface-2:rgba(255,253,244,.78);
+    --hairline:rgba(75,64,34,.14);--glass-hi:rgba(255,255,255,.8);
+    --text:#3B3223;--text-dim:#867A5C;
+    --gold:#B9822F;--gold-soft:rgba(185,130,47,.16);
+    --green:#5B8C4A;--green-soft:rgba(91,140,74,.16);
+    --teal:#4E8C82;--teal-soft:rgba(78,140,130,.16);
+    --blob-gold:#F0D9A0;--blob-teal:#BFE0C9;--blob-green:#CDE3A6;--blob-opacity:.55;
+    --gold-ink:#6B4A18;--green-ink:#33502A;--teal-ink:#2C4F49;
+  }
+  body[data-theme="cyberpunk"]{
+    --bg-1:#0A0714;--bg-2:#130A22;--bg-3:#08050F;
+    --surface:rgba(30,15,55,.45);--surface-2:rgba(30,15,55,.6);
+    --hairline:rgba(180,140,255,.25);--glass-hi:rgba(255,255,255,.2);
+    --text:#EAFBFF;--text-dim:#9AA0D8;
+    --gold:#FF3CAC;--gold-soft:rgba(255,60,172,.18);
+    --green:#39FF88;--green-soft:rgba(57,255,136,.16);
+    --teal:#29F1FF;--teal-soft:rgba(41,241,255,.16);
+    --blob-gold:#FF3CAC;--blob-teal:#29F1FF;--blob-green:#39FF88;--blob-opacity:.4;
+    --gold-ink:#FF9EDB;--green-ink:#9CFFC6;--teal-ink:#9FF6FF;
+    --glow:14px;
+  }
+  body[data-theme="muji"]{
+    --bg-1:#F2EEE6;--bg-2:#EBE5D8;--bg-3:#F2EEE6;
+    --surface:rgba(255,255,255,.5);--surface-2:rgba(255,255,255,.65);
+    --hairline:rgba(60,52,40,.12);--glass-hi:rgba(255,255,255,.7);
+    --text:#3A3733;--text-dim:#8C8579;
+    --gold:#A6793C;--gold-soft:rgba(166,121,60,.14);
+    --green:#6B7A5E;--green-soft:rgba(107,122,94,.14);
+    --teal:#5C6B6B;--teal-soft:rgba(92,107,107,.14);
+    --blob-gold:#DDD3BE;--blob-teal:#D7DAD2;--blob-green:#D9DECB;--blob-opacity:.25;
+    --gold-ink:#7A5A2E;--green-ink:#4C5741;--teal-ink:#3F4A4A;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0;
-    background:linear-gradient(180deg,#F2F8FE 0%,#DCEBFA 45%,#E8F2FC 100%) fixed;
+    background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 45%,var(--bg-3) 100%) fixed;
     color:var(--text);
     font-family:'IBM Plex Sans Thai',sans-serif;
     -webkit-tap-highlight-color:transparent;
@@ -41,10 +79,10 @@
     overflow-x:hidden;
     position:relative;
   }
-  .blob{position:fixed;border-radius:50%;filter:blur(85px);z-index:-1;opacity:.5;animation:drift 16s ease-in-out infinite alternate}
-  .blob-gold{width:280px;height:280px;background:#FFD8A0;top:-60px;left:-60px}
-  .blob-teal{width:340px;height:340px;background:#9AD4F5;top:40vh;right:-100px;animation-delay:-5s}
-  .blob-green{width:260px;height:260px;background:#A9EAC9;bottom:-40px;left:10vw;animation-delay:-10s}
+  .blob{position:fixed;border-radius:50%;filter:blur(85px);z-index:-1;opacity:var(--blob-opacity);animation:drift 16s ease-in-out infinite alternate}
+  .blob-gold{width:280px;height:280px;background:var(--blob-gold);top:-60px;left:-60px}
+  .blob-teal{width:340px;height:340px;background:var(--blob-teal);top:40vh;right:-100px;animation-delay:-5s}
+  .blob-green{width:260px;height:260px;background:var(--blob-green);bottom:-40px;left:10vw;animation-delay:-10s}
   @keyframes drift{from{transform:translate(0,0)}to{transform:translate(24px,-18px)}}
   @media (prefers-reduced-motion:reduce){.blob{animation:none}}
   .glass{
@@ -106,9 +144,9 @@
     cursor:pointer;transition:background .15s,color .15s;
   }
   .segmented input:checked + label{
-    background:rgba(201,146,46,.28);color:#7A4E0A;font-weight:600;
-    border:1px solid rgba(201,146,46,.5);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+    background:color-mix(in srgb,var(--gold) 28%,transparent);color:var(--gold-ink);font-weight:600;
+    border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 0 var(--glow) var(--gold);
   }
   .segmented input:focus-visible + label{outline:2px solid var(--gold);outline-offset:2px}
   .buffer-hint{font-size:.7rem;color:var(--text-dim)}
@@ -175,10 +213,10 @@
     display:flex;align-items:center;gap:8px;
   }
   .connector .kmbadge{
-    font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;color:#0F6B41;
-    background:rgba(24,140,85,.20);border:1px solid rgba(24,140,85,.4);border-radius:6px;padding:2px 7px;
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;color:var(--green-ink);
+    background:color-mix(in srgb,var(--green) 20%,transparent);border:1px solid color-mix(in srgb,var(--green) 40%,transparent);border-radius:6px;padding:2px 7px;
     -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 var(--glow) var(--green);
   }
   .connector .drivetxt{font-size:.75rem;color:var(--text-dim)}
 
@@ -204,15 +242,29 @@
   .arrival .lbl{font-size:.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
   .arrival .val{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:600;color:var(--teal)}
   .cta{
-    display:flex;align-items:center;gap:6px;background:rgba(21,150,160,.24);color:#0A4E54;
-    border:1px solid rgba(21,150,160,.5);
+    display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--teal) 24%,transparent);color:var(--teal-ink);
+    border:1px solid color-mix(in srgb,var(--teal) 50%,transparent);
     font-weight:600;font-size:.85rem;text-decoration:none;padding:12px 14px;border-radius:14px;
     white-space:nowrap;min-height:44px;
     -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 0 var(--glow) var(--teal);
   }
-  .cta:active{background:rgba(21,150,160,.38)}
+  .cta:active{background:color-mix(in srgb,var(--teal) 38%,transparent)}
   .cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  .themepicker{
+    display:flex;gap:6px;overflow-x:auto;margin-top:12px;padding-bottom:2px;
+    scrollbar-width:none;
+  }
+  .themepicker::-webkit-scrollbar{display:none}
+  .themepicker button{
+    flex:none;font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;
+    color:var(--text-dim);background:var(--surface);border:1px solid var(--hairline);
+    border-radius:999px;padding:6px 12px;min-height:32px;
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    box-shadow:inset 0 1px 0 var(--glass-hi);
+  }
+  .themepicker button.active{color:var(--text);background:var(--surface-2);border-color:var(--teal)}
 </style>
 </head>
 <body>
@@ -225,6 +277,12 @@
   <div class="eyebrow"><span class="dot"></span> Road trip · via ถ.บรมราชชนนี/AH123</div>
   <h1>Nakhon Pathom <span class="arrow">→</span> Hua Hin</h1>
   <span class="totalbadge" id="totalBadge"></span>
+  <div class="themepicker" id="themePicker">
+    <button type="button" data-theme="sky">ฟ้าอ่อน</button>
+    <button type="button" data-theme="ghibli">Ghibli</button>
+    <button type="button" data-theme="cyberpunk">Cyberpunk</button>
+    <button type="button" data-theme="muji">Muji</button>
+  </div>
 </header>
 
 <div class="wrap">
@@ -379,6 +437,18 @@ function recalc() {
 startTimeEl.addEventListener("input", recalc);
 document.getElementById("bufferSeg").addEventListener("change", recalc);
 build();
+
+const themePicker = document.getElementById("themePicker");
+function setTheme(theme) {
+  document.body.dataset.theme = theme;
+  localStorage.setItem("routeTheme", theme);
+  themePicker.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.theme === theme));
+}
+themePicker.addEventListener("click", e => {
+  const btn = e.target.closest("button");
+  if (btn) setTheme(btn.dataset.theme);
+});
+setTheme(localStorage.getItem("routeTheme") || "sky");
 </script>
 </body>
 </html>
