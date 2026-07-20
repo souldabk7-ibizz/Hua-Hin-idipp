@@ -1,6 +1,6 @@
 {
-  "name": "Nakhon Pathom to Hua Hin Trip",
-  "short_name": "Hua Hin Trip",
+  "name": "Songkhla - Hat Yai Trip",
+  "short_name": "Songkhla Trip",
   "start_url": "./route-plan.html",
   "scope": "./",
   "display": "standalone",

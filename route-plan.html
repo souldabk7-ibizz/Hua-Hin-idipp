@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#F6EFDB">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.svg">
-<title>Nakhon Pathom → Hua Hin</title>
+<title>สงขลา – หาดใหญ่</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,6 @@
     --teal:#4E8C82;--teal-soft:rgba(78,140,130,.16);
     --blob-gold:#F0D9A0;--blob-teal:#BFE0C9;--blob-green:#CDE3A6;--blob-opacity:.55;--blob-blur:85px;
     --gold-ink:#6B4A18;--green-ink:#33502A;--teal-ink:#2C4F49;
-    --glow:0px;
     --radius:22px;
     --radius-sm:14px;
     --blur:blur(22px) saturate(160%);
@@ -37,7 +36,7 @@
     color:var(--text);
     font-family:'IBM Plex Sans Thai',sans-serif;
     -webkit-tap-highlight-color:transparent;
-    padding-bottom:calc(92px + env(safe-area-inset-bottom));
+    padding-bottom:calc(32px + env(safe-area-inset-bottom));
     overflow-x:hidden;
     position:relative;
   }
@@ -47,29 +46,22 @@
   .blob-green{width:260px;height:260px;background:var(--blob-green);bottom:-40px;left:10vw;animation-delay:-10s}
   @keyframes drift{from{transform:translate(0,0)}to{transform:translate(24px,-18px)}}
   @media (prefers-reduced-motion:reduce){.blob{animation:none}}
-  .glass{
-    background:var(--surface);
-    -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-    border:1px solid var(--hairline);
-    box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.4),0 8px 30px rgba(23,55,90,.12);
-  }
+
   .wrap{max-width:480px;margin:0 auto;padding:0 16px}
   .mono{font-family:'IBM Plex Mono',monospace}
 
-  header.top{
-    padding:calc(20px + env(safe-area-inset-top)) 16px 18px;
-    max-width:480px;margin:0 auto;
-  }
+  header.top{padding:calc(20px + env(safe-area-inset-top)) 16px 18px;max-width:480px;margin:0 auto}
   .eyebrow{
     display:flex;align-items:center;gap:8px;
     font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.06em;
     color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;
   }
   .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
-  h1{font-size:1.5rem;line-height:1.25;margin:0 0 4px;font-weight:700;letter-spacing:-.01em}
-  h1 .arrow{color:var(--text-dim);font-weight:400;padding:0 2px}
+  h1{font-size:1.6rem;line-height:1.25;margin:0 0 4px;font-weight:700;letter-spacing:-.01em}
+  .route-line{font-size:.85rem;color:var(--text-dim);margin:0 0 10px}
+  .route-line .arrow{color:var(--gold);padding:0 2px}
   .totalbadge{
-    display:inline-flex;gap:6px;align-items:center;margin-top:10px;
+    display:inline-flex;gap:6px;align-items:center;
     font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--text-dim);
     background:var(--surface);border:1px solid var(--hairline);border-radius:999px;padding:5px 12px;
     -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
@@ -77,142 +69,73 @@
   }
   .totalbadge b{color:var(--text);font-weight:600}
 
-  .controls{
-    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
-    padding:16px;margin:0 0 20px;display:flex;flex-direction:column;gap:14px;
+  .daynav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 20px}
+  .daynav a{
+    display:block;text-decoration:none;color:inherit;
+    background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius-sm);
+    padding:10px 10px;
     -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-    box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.4),0 8px 30px rgba(23,55,90,.12);
+    box-shadow:inset 0 1px 0 var(--glass-hi),0 6px 20px rgba(23,55,90,.06);
   }
-  .ctl-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .ctl-label{font-size:.82rem;color:var(--text-dim)}
-  .time-pill{
-    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.05rem;
-    background:var(--surface-2);border:1px solid var(--hairline);border-radius:var(--radius-sm);
-    padding:8px 12px;color:var(--text);min-height:44px;min-width:100px;text-align:center;
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    box-shadow:inset 0 1px 0 var(--glass-hi);
+  .daynav .n{
+    font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;color:var(--gold-ink);
+    background:color-mix(in srgb,var(--gold) 20%,transparent);border-radius:999px;
+    display:inline-block;padding:1px 8px;margin-bottom:6px;
   }
-  .time-pill:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .daynav .t{font-size:.78rem;font-weight:600;line-height:1.3}
 
-  .segmented{
-    display:flex;background:var(--surface-2);border:1px solid var(--hairline);border-radius:999px;padding:3px;gap:2px;
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    box-shadow:inset 0 1px 0 var(--glass-hi);
+  .day{margin-bottom:28px;scroll-margin-top:16px}
+  .day-head{margin-bottom:12px}
+  .day-head .n{
+    font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;color:var(--teal-ink);
+    background:color-mix(in srgb,var(--teal) 18%,transparent);border-radius:999px;
+    display:inline-block;padding:2px 10px;margin-bottom:6px;
   }
-  .segmented input{position:absolute;opacity:0;pointer-events:none}
-  .segmented label{
-    flex:1;text-align:center;padding:8px 0;min-height:38px;display:flex;align-items:center;justify-content:center;
-    font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--text-dim);border-radius:999px;
-    cursor:pointer;transition:background .15s,color .15s;
-  }
-  .segmented input:checked + label{
-    background:color-mix(in srgb,var(--gold) 28%,transparent);color:var(--gold-ink);font-weight:600;
-    border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 0 var(--glow) var(--gold);
-  }
-  .segmented input:focus-visible + label{outline:2px solid var(--gold);outline-offset:2px}
-  .buffer-hint{font-size:.7rem;color:var(--text-dim)}
+  .day-head h2{font-size:1.15rem;margin:0 0 2px;font-weight:700}
+  .day-head .route{font-size:.8rem;color:var(--text-dim)}
 
-  .timeline{list-style:none;margin:0 0 18px;padding:0;position:relative}
-  .stop{
-    position:relative;padding-left:30px;padding-bottom:4px;
-    opacity:0;transform:translateY(8px);
-    animation:rise .45s ease forwards;
-  }
-  .stop:nth-child(1){animation-delay:.02s}
-  .stop:nth-child(2){animation-delay:.08s}
-  .stop:nth-child(3){animation-delay:.14s}
-  .stop:nth-child(4){animation-delay:.2s}
-  .stop:nth-child(5){animation-delay:.26s}
-  .stop:nth-child(6){animation-delay:.32s}
-  @keyframes rise{to{opacity:1;transform:translateY(0)}}
-  @media (prefers-reduced-motion:reduce){
-    .stop{animation:none;opacity:1;transform:none}
-  }
-  .stop::before{ /* node dot */
+  .timeline{list-style:none;margin:0;padding:0;position:relative}
+  .ev{position:relative;padding-left:30px;padding-bottom:4px}
+  .ev::before{
     content:"";position:absolute;left:3px;top:6px;width:12px;height:12px;border-radius:50%;
     background:var(--bg);border:2px solid var(--gold);
   }
-  .stop.first::before,.stop.last::before{border-color:var(--teal)}
-  .stop::after{ /* connecting line */
+  .ev.work::before{border-color:var(--teal)}
+  .ev.flight::before{border-color:var(--green)}
+  .ev::after{
     content:"";position:absolute;left:8px;top:20px;bottom:-4px;width:1px;
     background:repeating-linear-gradient(to bottom,var(--hairline) 0 4px,transparent 4px 8px);
   }
-  .stop.last::after{display:none}
+  .ev:last-child::after{display:none}
 
-  .stopcard{
+  .evcard{
     background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
     padding:12px 14px;margin-bottom:8px;
     -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
-    box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.4),0 6px 20px rgba(23,55,90,.10);
+    box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.4),0 6px 20px rgba(23,55,90,.08);
   }
-  .stopname-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .stopname{
-    font-weight:600;font-size:.95rem;color:var(--text);text-decoration:none;
-    display:flex;align-items:center;gap:6px;line-height:1.3;
+  .ev-row{display:flex;align-items:baseline;gap:10px}
+  .ev-time{font-family:'IBM Plex Mono',monospace;font-size:.82rem;font-weight:600;color:var(--gold-ink);white-space:nowrap}
+  .ev-text{font-size:.92rem;line-height:1.4;flex:1}
+  .ev-sub{font-size:.72rem;color:var(--text-dim);margin-top:2px}
+  .tag{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.66rem;font-weight:600;
+    color:var(--teal-ink);background:color-mix(in srgb,var(--teal) 20%,transparent);
+    border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:middle;
   }
-  .stopname svg{flex:none;color:var(--text-dim)}
-  .stopname:hover .pintxt, .stopname:focus-visible .pintxt{text-decoration:underline}
-  .times{display:flex;gap:10px;margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:.85rem}
-  .times .arrive{color:var(--text)}
-  .times .depart{color:var(--text-dim)}
-  .times .sep{color:var(--text-dim);opacity:.5}
-
-  .stepper{display:flex;align-items:center;gap:8px;margin-top:10px}
-  .stepper button{
-    width:32px;height:32px;border-radius:10px;border:1px solid var(--hairline);
-    background:var(--surface-2);color:var(--text);font-size:1rem;line-height:1;
-    display:flex;align-items:center;justify-content:center;
-    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-    box-shadow:inset 0 1px 0 var(--glass-hi);
-  }
-  .stepper button:active{background:var(--gold-soft);border-color:var(--gold)}
-  .stepper .val{font-family:'IBM Plex Mono',monospace;font-size:.85rem;min-width:64px;text-align:center;color:var(--text-dim)}
-  .stepper .val b{color:var(--text);font-weight:600}
-
-  .connector{
-    position:relative;padding-left:30px;margin:2px 0 10px;
-    display:flex;align-items:center;gap:8px;
-  }
-  .connector .kmbadge{
-    font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;color:var(--green-ink);
-    background:color-mix(in srgb,var(--green) 20%,transparent);border:1px solid color-mix(in srgb,var(--green) 40%,transparent);border-radius:6px;padding:2px 7px;
-    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 var(--glow) var(--green);
-  }
-  .connector .drivetxt{font-size:.75rem;color:var(--text-dim)}
+  a.pin{color:var(--text);text-decoration:none;border-bottom:1px dashed var(--gold)}
+  a.pin:hover{color:var(--gold-ink)}
 
   .note{
     background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);
-    padding:14px;font-size:.76rem;color:var(--text-dim);line-height:1.6;margin-bottom:24px;
+    padding:14px;font-size:.8rem;color:var(--text-dim);line-height:1.7;margin:10px 0 4px;
     -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
     box-shadow:inset 0 1px 0 var(--glass-hi);
   }
-  .note b{color:var(--text)}
+  .note b{color:var(--text);display:block;margin-bottom:6px;font-size:.82rem}
+  .note ul{margin:0;padding-left:18px}
 
-  .bottombar{
-    position:fixed;left:0;right:0;bottom:0;z-index:10;
-    padding:14px 16px calc(14px + env(safe-area-inset-bottom));
-  }
-  .bottombar-inner{
-    max-width:448px;margin:0 auto;background:var(--surface-2);border:1px solid var(--hairline);
-    border-radius:var(--radius);padding:10px 12px;display:flex;align-items:center;gap:10px;
-    -webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);
-    box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(255,255,255,.45),0 12px 36px rgba(23,55,90,.16);
-  }
-  .arrival{flex:1;min-width:0}
-  .arrival .lbl{font-size:.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em}
-  .arrival .val{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:600;color:var(--teal)}
-  .cta{
-    display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--teal) 24%,transparent);color:var(--teal-ink);
-    border:1px solid color-mix(in srgb,var(--teal) 50%,transparent);
-    font-weight:600;font-size:.85rem;text-decoration:none;padding:12px 14px;border-radius:14px;
-    white-space:nowrap;min-height:44px;
-    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 0 var(--glow) var(--teal);
-  }
-  .cta:active{background:color-mix(in srgb,var(--teal) 38%,transparent)}
-  .cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  footer{max-width:480px;margin:8px auto 0;padding:0 16px;font-size:.7rem;color:var(--text-dim);text-align:center}
 </style>
 </head>
 <body>
@@ -222,161 +145,106 @@
 <div class="blob blob-green" aria-hidden="true"></div>
 
 <header class="top">
-  <div class="eyebrow"><span class="dot"></span> Road trip · via ถ.บรมราชชนนี/AH123</div>
-  <h1>Nakhon Pathom <span class="arrow">→</span> Hua Hin</h1>
-  <span class="totalbadge" id="totalBadge"></span>
+  <div class="eyebrow"><span class="dot"></span> กำหนดการเดินทาง &amp; ปฏิบัติงาน</div>
+  <h1>สงขลา – หาดใหญ่</h1>
+  <p class="route-line">DMK <span class="arrow">→</span> HDY <span class="arrow">→</span> สงขลา <span class="arrow">→</span> หาดใหญ่ <span class="arrow">→</span> DMK</p>
+  <span class="totalbadge"><b>5–7 ส.ค. 2026</b> · 3 วัน 2 คืน</span>
 </header>
 
 <div class="wrap">
 
-  <div class="controls">
-    <div class="ctl-row">
-      <span class="ctl-label">ออกจากบ้าน</span>
-      <input type="time" id="startTime" class="time-pill mono" value="10:00">
-    </div>
-    <div class="ctl-row" style="flex-direction:column;align-items:stretch;gap:6px">
-      <div class="ctl-row">
-        <span class="ctl-label">Traffic buffer</span>
-        <span class="buffer-hint">ศุกร์กลางวัน ~10%</span>
-      </div>
-      <div class="segmented" id="bufferSeg">
-        <input type="radio" name="buf" id="buf0" value="0"><label for="buf0">0%</label>
-        <input type="radio" name="buf" id="buf10" value="10" checked><label for="buf10">10%</label>
-        <input type="radio" name="buf" id="buf20" value="20"><label for="buf20">20%</label>
-        <input type="radio" name="buf" id="buf30" value="30"><label for="buf30">30%</label>
-      </div>
-    </div>
-  </div>
+  <nav class="daynav">
+    <a href="#day1"><span class="n">วันที่ 1</span><div class="t">เดินทาง + เตรียมบูท</div></a>
+    <a href="#day2"><span class="n">วันที่ 2</span><div class="t">ปฏิบัติงานประจำบูท</div></a>
+    <a href="#day3"><span class="n">วันที่ 3</span><div class="t">หาดสมิหลา + กลับ</div></a>
+  </nav>
 
-  <ul class="timeline" id="timeline"></ul>
+  <section class="day" id="day1">
+    <div class="day-head">
+      <span class="n">วันที่ 1 · อังคาร 5 สิงหาคม 2026</span>
+      <h2>เดินทาง + เตรียมบูท</h2>
+      <div class="route">ดอนเมือง → หาดใหญ่ → สงขลา → เช็คอินโรงแรม</div>
+    </div>
+    <ul class="timeline" id="d1"></ul>
+  </section>
 
-  <p class="note">
-    <b>รถติดวันศุกร์:</b> ช่วงกลางวัน (10:00-15:00) ปกติไม่ติดมาก จุดติดจริงคือขาออก กทม. ช่วงเย็น 15:00+ (มีมาตรการ reverse-lane) — เส้นทางนี้ผ่านช่วงเสี่ยงตอนเช้า-บ่ายต้น เลี่ยงได้ ถ้าแวะนานขึ้นจนเลย 15:00 ให้เพิ่ม buffer<br><br>
-    <b>ระยะ/เวลาขับ:</b> ประมาณจากระยะทางรวมของ Google Maps (ไม่แยกให้ทีละช่วง) · แตะชื่อจุดเพื่อเปิด Google Maps ค้นหาสถานที่นั้น
-  </p>
+  <section class="day" id="day2">
+    <div class="day-head">
+      <span class="n">วันที่ 2 · พุธ 6 สิงหาคม 2026</span>
+      <h2>ปฏิบัติงานประจำบูท</h2>
+      <div class="route">วันปฏิบัติงานเต็มวันที่บูท</div>
+    </div>
+    <ul class="timeline" id="d2"></ul>
+    <div class="note">
+      <b>ตัวเลือกมื้อเย็น</b>
+      <ul>
+        <li>อยู่สงขลา — ซีฟู้ดริมทะเล / ย่านเมืองเก่าสงขลา</li>
+        <li>อยู่หาดใหญ่ — ตลาดกิมหยง, ถนนนิพัทธ์อุทิศ, ร้านอาหารชื่อดังในตัวเมือง</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="day" id="day3">
+    <div class="day-head">
+      <span class="n">วันที่ 3 · พฤหัสบดี 7 สิงหาคม 2026</span>
+      <h2>หาดสมิหลา + กลับ</h2>
+      <div class="route">หาดสมิหลา แล้วเดินทางกลับกรุงเทพฯ</div>
+    </div>
+    <ul class="timeline" id="d3"></ul>
+  </section>
 
 </div>
 
-<div class="bottombar">
-  <div class="bottombar-inner">
-    <div class="arrival">
-      <div class="lbl">ถึงที่พัก</div>
-      <div class="val mono" id="finalArrival">–:––</div>
-    </div>
-    <a class="cta" id="routeMapLink" target="_blank" rel="noopener" href="#">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>
-      เปิดใน Maps
-    </a>
-  </div>
-</div>
+<footer>สงขลา – หาดใหญ่ · 5–7 ส.ค. 2026 · อัปเดตล่าสุด 20 ก.ค. 2026</footer>
 
 <script>
-const legs = [
-  { name: "Home (Nakhon Pathom)", km: 0, driveMin: 0, defaultStop: 0, query: "Nakhon Pathom, Thailand" },
-  { name: "Thonburi Market Place", km: 15, driveMin: 20, defaultStop: 30, query: "Thonburi Market Place, Borommaratchachonnani Road, Nakhon Pathom" },
-  { name: "Wat Tham Chaeng (Khao Yai, Cha-am)", km: 152, driveMin: 129, defaultStop: 30, query: "Wat Tham Chaeng, Cha-am, Phetchaburi" },
-  { name: "Centara Life Cha Am Beach Resort Hua Hin", km: 21, driveMin: 18, defaultStop: 0, query: "Centara Life Cha Am Beach Resort Hua Hin" }
-];
-
-const stopMinutes = legs.map(l => l.defaultStop);
-
-const timelineEl = document.getElementById("timeline");
-const startTimeEl = document.getElementById("startTime");
-const finalArrivalEl = document.getElementById("finalArrival");
-
 const mapUrl = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
-const fmt = mins => {
-  const h = Math.floor(mins / 60) % 24, m = Math.round(mins % 60);
-  return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+const pin = (label, place) => `<a class="pin" target="_blank" rel="noopener" href="${mapUrl(place)}">${label}</a>`;
+
+const days = {
+  d1: [
+    { time: "08:30", text: "ถึงสนามบินดอนเมือง (DMK)" },
+    { time: "10:10", sub: "ออกเดินทาง", text: "✈️ DMK → หาดใหญ่ (HDY)", cls: "flight" },
+    { time: "11:40", text: `ถึง${pin("สนามบินหาดใหญ่", "Hat Yai International Airport")} รับสัมภาระ` },
+    { time: "12:00–13:00", text: "รับประทานอาหารกลางวัน" },
+    { time: "13:00–14:00", text: `เดินทางไป${pin("จังหวัดสงขลา", "Songkhla, Thailand")}` },
+    { time: "14:00–15:00", text: "จัดเตรียมบูทที่โรงแรม", tag: "งาน", cls: "work" },
+    { time: "15:00–15:45", text: "เดินทางกลับหาดใหญ่" },
+    { time: "ก่อน 16:00", text: `เช็คอินที่ ${pin("Hop Inn Hat Yai", "Hop Inn Hat Yai")}` },
+    { time: "ช่วงเย็น", text: "พักผ่อน / รับประทานอาหารตามอัธยาศัย" }
+  ],
+  d2: [
+    { time: "07:45", text: "รถมารับที่ Hop Inn" },
+    { time: "08:00–15:30", text: "ปฏิบัติงานประจำบูท", tag: "งาน", cls: "work" },
+    { time: "15:30–17:00", text: "เก็บอุปกรณ์ / เดินทาง" },
+    { time: "18:00 เป็นต้นไป", text: "รับประทานอาหารเย็น — เลือกได้ระหว่างสงขลาหรือหาดใหญ่" },
+    { time: "ช่วงค่ำ", text: "พักผ่อน" }
+  ],
+  d3: [
+    { time: "08:30", text: "รับประทานอาหารเช้า (ติ่มซำ)" },
+    { time: "09:30–11:30", text: `เที่ยว${pin("หาดสมิหลา", "Samila Beach, Songkhla")} ถ่ายรูป พักผ่อน` },
+    { time: "11:30–12:00", text: "เดินเล่นบริเวณชายหาด / ซื้อของฝาก" },
+    { time: "12:00–13:00", text: "เดินทางกลับหาดใหญ่" },
+    { time: "13:00", text: "รับประทานอาหารกลางวัน (หากมีเวลา)" },
+    { time: "ก่อน 14:00", text: `ถึง${pin("สนามบินหาดใหญ่", "Hat Yai International Airport")} (HDY) เตรียมเช็คอิน` },
+    { time: "—", text: "✈️ เดินทางกลับกรุงเทพฯ ตามเที่ยวบินที่จองไว้", cls: "flight" }
+  ]
 };
-const pinSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
 
-function buildMap() {
-  const saddr = legs[0].query;
-  const daddr = legs[legs.length - 1].query;
-  const waypoints = legs.slice(1, -1).map(l => encodeURIComponent(l.query)).join("|");
-  document.getElementById("routeMapLink").href =
-    `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(saddr)}&destination=${encodeURIComponent(daddr)}&waypoints=${waypoints}`;
-}
-
-function buildTotalBadge() {
-  const km = legs.reduce((a, l) => a + l.km, 0);
-  const min = legs.reduce((a, l) => a + l.driveMin, 0);
-  document.getElementById("totalBadge").innerHTML =
-    `<b>${Math.floor(min / 60)}h ${min % 60}m</b> ขับ · <b>${km}km</b> · ${legs.length} จุดแวะ`;
-}
-
-function build() {
-  buildMap();
-  buildTotalBadge();
-  timelineEl.innerHTML = "";
-
-  legs.forEach((leg, i) => {
-    if (i > 0) {
-      const conn = document.createElement("li");
-      conn.className = "connector";
-      conn.innerHTML = `<span class="kmbadge">${leg.km}km</span><span class="drivetxt">ขับ ~${leg.driveMin} นาที</span>`;
-      timelineEl.appendChild(conn);
-    }
-
-    const li = document.createElement("li");
-    li.className = "stop" + (i === 0 ? " first" : "") + (i === legs.length - 1 ? " last" : "");
-    const canStop = i !== 0 && i !== legs.length - 1;
-    li.innerHTML = `
-      <div class="stopcard">
-        <div class="stopname-row">
-          <a class="stopname" target="_blank" rel="noopener" href="${mapUrl(leg.query)}">${pinSvg}<span class="pintxt">${leg.name}</span></a>
+Object.entries(days).forEach(([id, events]) => {
+  const ul = document.getElementById(id);
+  ul.innerHTML = events.map(e => `
+    <li class="ev ${e.cls || ""}">
+      <div class="evcard">
+        <div class="ev-row">
+          <span class="ev-time mono">${e.time}</span>
+          <span class="ev-text">${e.text}${e.tag ? `<span class="tag">${e.tag}</span>` : ""}</span>
         </div>
-        <div class="times">
-          <span class="arrive">${i === 0 ? "ออก" : "ถึง"} <b class="arriveVal">-</b></span>
-          ${canStop ? '<span class="sep">·</span><span class="depart">ออก <b class="departVal">-</b></span>' : ""}
-        </div>
-        ${canStop ? `
-        <div class="stepper" data-idx="${i}">
-          <button type="button" data-d="-5" aria-label="ลดเวลาแวะ">−</button>
-          <span class="val">แวะ <b class="minVal">${leg.defaultStop}</b> นาที</span>
-          <button type="button" data-d="5" aria-label="เพิ่มเวลาแวะ">+</button>
-        </div>` : ""}
+        ${e.sub ? `<div class="ev-sub">${e.sub}</div>` : ""}
       </div>
-    `;
-    timelineEl.appendChild(li);
-  });
-
-  timelineEl.querySelectorAll(".stepper").forEach(stepper => {
-    const idx = Number(stepper.dataset.idx);
-    stepper.querySelectorAll("button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const d = Number(btn.dataset.d);
-        stopMinutes[idx] = Math.max(0, stopMinutes[idx] + d);
-        stepper.querySelector(".minVal").textContent = stopMinutes[idx];
-        recalc();
-      });
-    });
-  });
-
-  recalc();
-}
-
-function recalc() {
-  const [h, m] = startTimeEl.value.split(":").map(Number);
-  let t = h * 60 + m;
-  const buffer = 1 + Number(document.querySelector('input[name="buf"]:checked').value) / 100;
-
-  const stops = timelineEl.querySelectorAll(".stop");
-  legs.forEach((leg, i) => {
-    t += leg.driveMin * buffer;
-    const card = stops[i];
-    card.querySelector(".arriveVal").textContent = fmt(t);
-    t += stopMinutes[i];
-    const departEl = card.querySelector(".departVal");
-    if (departEl) departEl.textContent = fmt(t);
-    if (i === legs.length - 1) finalArrivalEl.textContent = fmt(t);
-  });
-}
-
-startTimeEl.addEventListener("input", recalc);
-document.getElementById("bufferSeg").addEventListener("change", recalc);
-build();
+    </li>
+  `).join("");
+});
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
