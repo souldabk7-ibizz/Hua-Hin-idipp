@@ -161,7 +161,7 @@
 
   <section class="day" id="day1">
     <div class="day-head">
-      <span class="n">วันที่ 1 · อังคาร 5 สิงหาคม 2026</span>
+      <span class="n">วันที่ 1 · พุธ 5 สิงหาคม 2026</span>
       <h2>เดินทาง + เตรียมบูท</h2>
       <div class="route">ดอนเมือง → หาดใหญ่ → สงขลา → เช็คอินโรงแรม</div>
     </div>
@@ -170,7 +170,7 @@
 
   <section class="day" id="day2">
     <div class="day-head">
-      <span class="n">วันที่ 2 · พุธ 6 สิงหาคม 2026</span>
+      <span class="n">วันที่ 2 · พฤหัสบดี 6 สิงหาคม 2026</span>
       <h2>ปฏิบัติงานประจำบูท</h2>
       <div class="route">วันปฏิบัติงานเต็มวันที่บูท</div>
     </div>
@@ -178,15 +178,15 @@
     <div class="note">
       <b>ตัวเลือกมื้อเย็น</b>
       <ul>
-        <li>อยู่สงขลา — ซีฟู้ดริมทะเล / ย่านเมืองเก่าสงขลา</li>
         <li>อยู่หาดใหญ่ — ตลาดกิมหยง, ถนนนิพัทธ์อุทิศ, ร้านอาหารชื่อดังในตัวเมือง</li>
+        <li>อยู่สงขลา (เกาะยอ) — <a class="pin" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Charmed%20KohYo%20Songkhla">Charmed KohYo</a>, <a class="pin" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%A8%E0%B8%B4%E0%B8%A3%E0%B8%94%E0%B8%B2%20%E0%B9%80%E0%B8%81%E0%B8%B2%E0%B8%B0%E0%B8%A2%E0%B8%AD">ศิรดา เกาะยอ</a>, <a class="pin" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B9%80%E0%B8%84%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B8%94%E0%B8%B4%E0%B8%99%20%E0%B9%80%E0%B8%81%E0%B8%B2%E0%B8%B0%E0%B8%A2%E0%B8%AD">น้ำเคียงดิน</a> — ซีฟู้ด/อาหารใต้ริมทะเล</li>
       </ul>
     </div>
   </section>
 
   <section class="day" id="day3">
     <div class="day-head">
-      <span class="n">วันที่ 3 · พฤหัสบดี 7 สิงหาคม 2026</span>
+      <span class="n">วันที่ 3 · ศุกร์ 7 สิงหาคม 2026</span>
       <h2>หาดสมิหลา + กลับ</h2>
       <div class="route">หาดสมิหลา แล้วเดินทางกลับกรุงเทพฯ</div>
     </div>
@@ -218,7 +218,7 @@ const days = {
     { time: "07:45", text: "รถมารับที่ Hop Inn" },
     { time: "08:00–15:30", text: "ปฏิบัติงานประจำบูท", tag: "งาน", cls: "work" },
     { time: "15:30–17:00", text: "เก็บอุปกรณ์ / เดินทาง" },
-    { time: "18:00 เป็นต้นไป", text: "รับประทานอาหารเย็น — เลือกได้ระหว่างสงขลาหรือหาดใหญ่" },
+    { time: "18:00", text: `รับประทานอาหารเย็นที่ ${pin("สะหวา", "สะหวา ร้านอาหาร หาดใหญ่ สนามบิน")} ${link("(ดูรีวิว)", "https://www.wongnai.com/reviews/c98416f6e27a47c194d69bdac22c415a")}`, sub: "ร้านอาหารไทยใกล้สนามบินหาดใหญ่" },
     { time: "ช่วงค่ำ", text: "พักผ่อน" }
   ],
   d3: [
@@ -228,7 +228,6 @@ const days = {
     { time: "12:00–13:00", text: "เดินทางกลับหาดใหญ่" },
     { time: "13:00", text: "รับประทานอาหารกลางวัน (หากมีเวลา)" },
     { time: "ก่อน 14:00", text: `ถึง${pin("สนามบินหาดใหญ่", "Hat Yai International Airport")} (HDY) เตรียมเช็คอิน` },
-    { time: "18:00", text: `รับประทานอาหารเย็นที่ ${pin("สะหวา", "สะหวา ร้านอาหาร หาดใหญ่ สนามบิน")} ${link("(ดูรีวิว)", "https://www.wongnai.com/reviews/c98416f6e27a47c194d69bdac22c415a")}`, sub: "ร้านอาหารไทยใกล้สนามบินหาดใหญ่" },
     { time: "—", text: "✈️ เดินทางกลับกรุงเทพฯ ตามเที่ยวบินที่จองไว้", cls: "flight" }
   ]
 };
