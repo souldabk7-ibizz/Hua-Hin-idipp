@@ -200,6 +200,7 @@
 <script>
 const mapUrl = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
 const pin = (label, place) => `<a class="pin" target="_blank" rel="noopener" href="${mapUrl(place)}">${label}</a>`;
+const link = (label, url) => `<a class="pin" target="_blank" rel="noopener" href="${url}">${label}</a>`;
 
 const days = {
   d1: [
@@ -221,12 +222,13 @@ const days = {
     { time: "ช่วงค่ำ", text: "พักผ่อน" }
   ],
   d3: [
-    { time: "08:30", text: "รับประทานอาหารเช้า (ติ่มซำ)" },
+    { time: "08:30", text: `รับประทานอาหารเช้า (ติ่มซำ) ที่ ${pin("ติ่มซำ นักวิ่งหาดใหญ่", "ติ่มซำ นักวิ่งหาดใหญ่")}` },
     { time: "09:30–11:30", text: `เที่ยว${pin("หาดสมิหลา", "Samila Beach, Songkhla")} ถ่ายรูป พักผ่อน` },
     { time: "11:30–12:00", text: "เดินเล่นบริเวณชายหาด / ซื้อของฝาก" },
     { time: "12:00–13:00", text: "เดินทางกลับหาดใหญ่" },
     { time: "13:00", text: "รับประทานอาหารกลางวัน (หากมีเวลา)" },
     { time: "ก่อน 14:00", text: `ถึง${pin("สนามบินหาดใหญ่", "Hat Yai International Airport")} (HDY) เตรียมเช็คอิน` },
+    { time: "18:00", text: `รับประทานอาหารเย็นที่ ${pin("สะหวา", "สะหวา ร้านอาหาร หาดใหญ่ สนามบิน")} ${link("(ดูรีวิว)", "https://www.wongnai.com/reviews/c98416f6e27a47c194d69bdac22c415a")}`, sub: "ร้านอาหารไทยใกล้สนามบินหาดใหญ่" },
     { time: "—", text: "✈️ เดินทางกลับกรุงเทพฯ ตามเที่ยวบินที่จองไว้", cls: "flight" }
   ]
 };
